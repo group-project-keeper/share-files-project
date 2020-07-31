@@ -34,8 +34,7 @@ public class User implements UserDetails {
     @NotBlank(message = "Bad username")
     private String username;
 
-    //@Size(message = "Choose longer password. min 6 length", min = 6)
-    //@NotBlank(message = "Bad password")
+
     @PasswordStrength
     private String password;
 
