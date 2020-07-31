@@ -21,7 +21,9 @@ public class UploadController {
 
     @PostMapping("/upload")
     public Object uploadFile(@RequestParam("file") MultipartFile file) {
-        if(file.isEmpty()) return new ErrorResponse.Builder(HttpStatus.BAD_REQUEST, "File is empty").build();
+        if(file.isEmpty()) return new ResponseEntity<>(
+                new ErrorResponse.Builder(HttpStatus.BAD_REQUEST, "File is empty").build(),
+                HttpStatus.BAD_REQUEST);
 
         if(uploadService.uploadFile(file))
             return ResponseEntity.ok();
