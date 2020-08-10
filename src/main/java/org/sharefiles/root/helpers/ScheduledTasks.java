@@ -13,6 +13,10 @@ import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 
+import org.sharefiles.root.config.ShareFilesConfig;
+
+import javax.annotation.PostConstruct;
+
 
 @Service
 public class ScheduledTasks {
@@ -20,34 +24,35 @@ public class ScheduledTasks {
 
     private static Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
     private String todayFolderDirectory = OwnDateFormatter.getSimpleDateFormat();
+    private String tomorrowFolderDirectory = OwnDateFormatter.getNextDayDate();
+    private String dayAfterTomorrow = OwnDateFormatter.getDayAfterTomorrow();
+
 
     @Value("${upload.service.main.directory}")
     private String uploadDirectory;
 
-    @Scheduled(cron = "0 0 1 * * ?", zone = "Europe/Warsaw")
-    //@Scheduled(fixedRate = 8000)
-    public void createDirectoryForCurrentDay(){
 
-        String tomorrowFolderDirectory = uploadDirectory + OwnDateFormatter.getNextDayDate();
-        try {
-            if(!new File(todayFolderDirectory).exists())
-                Files.createDirectory(Paths.get(todayFolderDirectory));
-            if(!new File(tomorrowFolderDirectory).exists())
-                Files.createDirectory(Paths.get(tomorrowFolderDirectory));
-        } catch (IOException e) {
-            logger.error("There has been an error " + e.getMessage());
-        }
+    @Scheduled(cron = ShareFilesConfig.cronRunAtNight)
+    public void createDirectoryDayAfterTomorrow(){
+        createDirectoryFunction(ShareFilesConfig.anonymousDirectory+dayAfterTomorrow);
+        createDirectoryFunction(ShareFilesConfig.registeredUserDirectory+dayAfterTomorrow);
+
     }
 
-    @Scheduled(cron = "0 0 1 * * ?", zone="Europe/Warsaw")
-    //@Scheduled(fixedRate= 8000)
-    public void deleteOldFolders(){
-        String folderToDelete = uploadDirectory + OwnDateFormatter.getFolderNameToDelete();
+
+    @PostConstruct
+    public void createDirectoryForUploads(){
+        createDirectoryFunction(ShareFilesConfig.anonymousDirectory+todayFolderDirectory);
+        createDirectoryFunction(ShareFilesConfig.anonymousDirectory+tomorrowFolderDirectory);
+        createDirectoryFunction(ShareFilesConfig.registeredUserDirectory);
+    }
+
+    public void createDirectoryFunction(String directory){
         try{
-            FileUtils.deleteDirectory(new File(folderToDelete));
+        Files.createDirectories(Paths.get(directory));
         } catch (IOException e){
-            logger.error("There has been an error " + e.getMessage());
+            logger.error("There has been an error " + e.getMessage() + e.getCause());
         }
-
     }
+
 }

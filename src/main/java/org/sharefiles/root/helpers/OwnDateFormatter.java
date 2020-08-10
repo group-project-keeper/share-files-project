@@ -19,6 +19,12 @@ public class OwnDateFormatter {
         return dateFormat.format(tomorrowDate.getTime());
     }
 
+    public static String getDayAfterTomorrow(){
+        Calendar tomorrowDate = Calendar.getInstance();
+        tomorrowDate.add(Calendar.DAY_OF_MONTH, 2);
+        return dateFormat.format(tomorrowDate.getTime());
+    }
+
     public static String getFolderNameToDelete(){
         Calendar tomorrowDate = Calendar.getInstance();
         tomorrowDate.add(Calendar.DAY_OF_MONTH, -7);
