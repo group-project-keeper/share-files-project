@@ -39,7 +39,7 @@ public class ScheduledTasks {
     public void createDirectoryForUploads(){
         createDirectoryFunction(ShareFilesConfig.ANONYMOUS_DIRECTORY + todayFolderDirectory);
         createDirectoryFunction(ShareFilesConfig.ANONYMOUS_DIRECTORY + tomorrowFolderDirectory);
-        createDirectoryFunction(ShareFilesConfig.REGISTERED_DIRECTORY.toString());
+        createDirectoryFunction(ShareFilesConfig.REGISTERED_DIRECTORY);
     }
 
     public void createDirectoryFunction(String directory){

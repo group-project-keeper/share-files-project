@@ -1,7 +1,6 @@
 package org.sharefiles.root.helpers;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,10 +24,11 @@ public class OwnDateFormatter {
         return dateFormat.format(tomorrowDate.getTime());
     }
 
-    public static String getFolderNameToDelete(){
+    public static  String getFolderNameToDelete(){
         Calendar tomorrowDate = Calendar.getInstance();
         tomorrowDate.add(Calendar.DAY_OF_MONTH, -7);
-        return dateFormat.format(tomorrowDate.getTime());
+
+        return dateFormat.format(tomorrowDate);
     }
 
 

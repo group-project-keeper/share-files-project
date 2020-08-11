@@ -48,10 +48,10 @@ public class CleanUpFoldersTasks {
             if (file.isDirectory()){
                 showAndDeleteFiles(Objects.requireNonNull(file.listFiles()), days);
             } else{
-                long diff = new Date().getTime()- file.lastModified();
-                if (diff > days * 24 * 60 *60 *1000){
+                long diff = new Date().getTime() - file.lastModified();
+                if (diff > days * 24 * 60 * 60 * 1000){
                     boolean delete = file.delete();
-                    logger.info("File deleted");
+                    logger.info("File deleted :" + delete);
                 }
             }
         }
