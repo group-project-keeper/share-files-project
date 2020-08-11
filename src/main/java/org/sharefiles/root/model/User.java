@@ -42,6 +42,8 @@ public class User implements UserDetails {
     @Transient
     private String comingFromUrl;
 
+    private String uploadDirName;
+
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;

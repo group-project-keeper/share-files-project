@@ -24,6 +24,6 @@ class OwnDateFormatterTest {
 
     @Test
     void getFolderNameToDelete() {
-        OwnDateFormatter.getFolderNameToDelete().forEach(System.out::println);
+        System.out.println(OwnDateFormatter.getFolderNameToDelete());
     }
 }

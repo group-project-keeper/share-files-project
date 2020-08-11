@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 public class AuthenticationManagerService {
@@ -33,6 +35,7 @@ public class AuthenticationManagerService {
 
     public void registerUser(User user) {
         user.setPassword(argonPasswordEncoder.encode(user.getPassword()));
+        user.setUploadDirName(UUID.randomUUID().toString());
         userRepository.save(user);
     }
 
