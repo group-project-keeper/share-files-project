@@ -1,21 +1,16 @@
 package org.sharefiles.root.helpers;
 
+import org.sharefiles.root.config.ShareFilesConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import org.apache.commons.io.FileUtils;
-
-import org.sharefiles.root.config.ShareFilesConfig;
-
-import javax.annotation.PostConstruct;
 
 
 @Service
@@ -32,19 +27,19 @@ public class ScheduledTasks {
     private String uploadDirectory;
 
 
-    @Scheduled(cron = ShareFilesConfig.cronRunAtNight)
+    @Scheduled(cron = ShareFilesConfig.CRON_AT_NIGHT_TIME)
     public void createDirectoryDayAfterTomorrow(){
-        createDirectoryFunction(ShareFilesConfig.anonymousDirectory+dayAfterTomorrow);
-        createDirectoryFunction(ShareFilesConfig.registeredUserDirectory+dayAfterTomorrow);
+        createDirectoryFunction(ShareFilesConfig.ANONYMOUS_DIRECTORY + dayAfterTomorrow);
+        createDirectoryFunction(ShareFilesConfig.REGISTERED_DIRECTORY + dayAfterTomorrow);
 
     }
 
 
     @PostConstruct
     public void createDirectoryForUploads(){
-        createDirectoryFunction(ShareFilesConfig.anonymousDirectory+todayFolderDirectory);
-        createDirectoryFunction(ShareFilesConfig.anonymousDirectory+tomorrowFolderDirectory);
-        createDirectoryFunction(ShareFilesConfig.registeredUserDirectory);
+        createDirectoryFunction(ShareFilesConfig.ANONYMOUS_DIRECTORY + todayFolderDirectory);
+        createDirectoryFunction(ShareFilesConfig.ANONYMOUS_DIRECTORY + tomorrowFolderDirectory);
+        createDirectoryFunction(ShareFilesConfig.REGISTERED_DIRECTORY.toString());
     }
 
     public void createDirectoryFunction(String directory){

@@ -1,5 +1,6 @@
 package org.sharefiles.root.helpers;
 
+import org.sharefiles.root.config.ShareFilesConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,18 +8,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
 import java.util.Date;
 import java.util.Objects;
-
-import org.apache.commons.io.FileUtils;
-
-import org.sharefiles.root.config.ShareFilesConfig;
-
-import javax.annotation.PostConstruct;
 
 
 @Service
@@ -32,23 +23,23 @@ public class CleanUpFoldersTasks {
     private String uploadDirectory;
 
 
-    @Scheduled(cron = ShareFilesConfig.cronRunAtNight)
+    @Scheduled(cron = ShareFilesConfig.CRON_AT_NIGHT_TIME)
     public void cleanUpAnonymousFiles(){
-        File[] files = new File(ShareFilesConfig.anonymousDirectory).listFiles();
+        File[] files = new File(ShareFilesConfig.ANONYMOUS_DIRECTORY).listFiles();
         showAndDeleteFiles(files, 2);
     }
 
-    @Scheduled(cron = ShareFilesConfig.cronRunAtNight)
+    @Scheduled(cron = ShareFilesConfig.CRON_AT_NIGHT_TIME)
     public void cleanUpRegisteredFilesAndFolder(){
-        File[] files = new File(ShareFilesConfig.anonymousDirectory).listFiles();
+        File[] files = new File(ShareFilesConfig.ANONYMOUS_DIRECTORY).listFiles();
         showAndDeleteFiles(files, 7);
     }
-    
-    @Scheduled(cron = ShareFilesConfig.cronRunAtNight)
+
+    @Scheduled(cron = ShareFilesConfig.CRON_AT_NIGHT_TIME)
     public void removeEmptyDirectory(){
         do{
             isFinished = true;
-            deleteEmptyFolders(ShareFilesConfig.registeredUserDirectory);
+            deleteEmptyFolders(ShareFilesConfig.REGISTERED_DIRECTORY);
         }while(!isFinished);
     }
 
@@ -59,7 +50,8 @@ public class CleanUpFoldersTasks {
             } else{
                 long diff = new Date().getTime()- file.lastModified();
                 if (diff > days * 24 * 60 *60 *1000){
-                    file.delete();
+                    boolean delete = file.delete();
+                    logger.info("File deleted");
                 }
             }
         }
@@ -69,7 +61,7 @@ public class CleanUpFoldersTasks {
         File folder = new File(directoryLocation);
         File[] listofFiles = folder.listFiles();
         assert listofFiles != null;
-        if(listofFiles.length==0){
+        if(listofFiles.length == 0){
             folder.delete();
             isFinished=false;
         }else{

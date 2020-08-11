@@ -1,13 +1,11 @@
 package org.sharefiles.root.config;
 
-import org.springframework.scheduling.annotation.Scheduled;
 
 public class ShareFilesConfig {
 
-    public static final String anonymousDirectory = "share-files/anonymous/";
-    public static final String registeredUserDirectory = "share-files/registered/";
-    public static final String cronRunAtNight = "cron = \"0 0 1 * * ?\", zone = \"Europe/Warsaw\"";
+    public static final String ANONYMOUS_DIRECTORY = "share-files/anonymous/";
+    public static final String REGISTERED_DIRECTORY = "share-files/registered/";
+    public static final String CRON_AT_NIGHT_TIME = "0 0 1 * * ?";
+    public static final String CRON_AT_NIGHT_ZONE = "Europe/Warsaw";
 
 }
-
-//@Scheduled(cron = "0 0 1 * * ?", zone = "Europe/Warsaw")

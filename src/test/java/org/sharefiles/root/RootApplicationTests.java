@@ -1,6 +1,7 @@
 package org.sharefiles.root;
 
 import org.junit.jupiter.api.Test;
+import org.sharefiles.root.config.ShareFilesConfig;
 import org.sharefiles.root.model.UploadedFile;
 import org.sharefiles.root.repository.UploadFilesRepository;
 import org.sharefiles.root.services.UploadService;
@@ -33,5 +34,11 @@ class RootApplicationTests {
     void uploadMethodTest() {
 	    uploadService.uploadFile(new MockMultipartFile("test-file.txt", "sample data1".getBytes()));
     }
+
+
+    @Test
+	void testEnumValues() {
+		System.out.println(ShareFilesConfig.ANONYMOUS_DIRECTORY);
+	}
 
 }
