@@ -6,11 +6,15 @@ import org.sharefiles.root.model.UploadedFile;
 import org.sharefiles.root.repository.UploadFilesRepository;
 import org.sharefiles.root.services.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.Date;
 
+
+@AutoConfigureMockMvc
 @SpringBootTest
 class RootApplicationTests {
 
@@ -18,6 +22,7 @@ class RootApplicationTests {
 	private UploadFilesRepository uploadFilesRepository;
 
 	@Autowired
+	//@MockBean
     private UploadService uploadService;
 
 	@Test
@@ -29,12 +34,17 @@ class RootApplicationTests {
 		uploadFilesRepository.save(file);
 
 	}
-
+	/*
 	@Test
     void uploadMethodTest() {
 	    uploadService.uploadFile(new MockMultipartFile("test-file.txt", "sample data1".getBytes()));
     }
+	 */
 
+	@Test
+	void uploadMethodTest() {
+		uploadService.uploadFileAnon(new MockMultipartFile("data", "test-file.txt", "text/plain","sample data1".getBytes()));
+	}
 
     @Test
 	void testEnumValues() {

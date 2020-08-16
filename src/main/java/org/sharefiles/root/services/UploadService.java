@@ -1,6 +1,10 @@
 package org.sharefiles.root.services;
 
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.sharefiles.root.config.ShareFilesConfig;
+import org.sharefiles.root.helpers.FileNameGenerator;
+import org.sharefiles.root.helpers.OwnDateFormatter;
+import org.sharefiles.root.model.AnonymousFiles;
 import org.sharefiles.root.model.User;
 import org.sharefiles.root.repository.UserRepository;
 import org.slf4j.Logger;
@@ -9,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,35 +28,15 @@ import java.util.Optional;
 @Service
 public class UploadService {
 
-
-    @Value("${upload.service.main.directory}")
-    private String shareFilesDirectory;
-
     private static final Logger logger = LoggerFactory.getLogger(UploadService.class);
+    private String todayFolderDirectory = OwnDateFormatter.getSimpleDateFormat();
+
 
     @Autowired
     private UserRepository userRepository;
 
-
-    @EventListener(ApplicationReadyEvent.class)
-    private void createMainDirectory() {
-        try {
-            if(!new File(shareFilesDirectory).exists())
-                Files.createDirectory(Paths.get(shareFilesDirectory));
-        } catch (IOException e) {
-            logger.error("There has been an error " + e.getMessage());
-        }
-    }
-
-    @EventListener(ApplicationReadyEvent.class)
-    private void createChildDirectories() {
-        try {
-            Files.createDirectory(Paths.get(ShareFilesConfig.ANONYMOUS_DIRECTORY));
-            Files.createDirectory(Paths.get(ShareFilesConfig.REGISTERED_DIRECTORY));
-        } catch (Exception e) {
-            logger.error("Error creating child dirs or they already exist", e.getCause());
-        }
-    }
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public boolean uploadFileRegistered(MultipartFile multipartFile) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -72,20 +57,20 @@ public class UploadService {
     }
 
     public boolean uploadFileAnon(MultipartFile multipartFile) {
-        Path uploadPath = Paths.get(ShareFilesConfig.ANONYMOUS_DIRECTORY
-                + multipartFile.getOriginalFilename());
+        String FileNameGenerated = FileNameGenerator.generateFileNameHash(multipartFile.getOriginalFilename());
+
+        Path uploadPath = Paths.get(ShareFilesConfig.ANONYMOUS_DIRECTORY + todayFolderDirectory+"/"
+                +FileNameGenerated);
         try {
             Files.copy(multipartFile.getInputStream(), uploadPath);
+            AnonymousFiles anonFileMongoDate = new AnonymousFiles(FileNameGenerated, multipartFile.getOriginalFilename());
+            mongoTemplate.insert(anonFileMongoDate, "anonymous files");
             return true;
         } catch (IOException e) {
             logger.error("Error in uploading ANON file function() " + e.getMessage());
             return false;
         }
-
     }
-
-
-
 
 
 
