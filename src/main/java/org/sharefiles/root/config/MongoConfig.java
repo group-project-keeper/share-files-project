@@ -13,15 +13,12 @@ public class MongoConfig {
 
     public @Bean
     MongoDatabaseFactory mongoDbFactory() throws Exception {
-        return new SimpleMongoClientDatabaseFactory(MongoClients.create(), "files-data");
+        return new SimpleMongoClientDatabaseFactory(MongoClients.create(), ShareFilesConfig.MONGO_DATABASE_NAME);
     }
 
     public @Bean
     MongoTemplate mongoTemplate() throws Exception {
-
-        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
-
-        return mongoTemplate;
+        return new MongoTemplate(mongoDbFactory());
     }
 
 
