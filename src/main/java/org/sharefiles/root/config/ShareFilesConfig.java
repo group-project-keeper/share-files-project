@@ -7,5 +7,7 @@ public class ShareFilesConfig {
     public static final String REGISTERED_DIRECTORY = "share-files/registered/";
     public static final String CRON_AT_NIGHT_TIME = "0 0 1 * * ?";
     public static final String CRON_AT_NIGHT_ZONE = "Europe/Warsaw";
+    public static final int FILE_NAME_HASH_LENGTH = 10;
+    public static final String MONGO_DATABASE_NAME = "files-data";
 
 }
