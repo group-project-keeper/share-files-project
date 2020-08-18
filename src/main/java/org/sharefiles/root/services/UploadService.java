@@ -63,7 +63,7 @@ public class UploadService {
                 +FileNameGenerated);
         try {
             Files.copy(multipartFile.getInputStream(), uploadPath);
-            AnonymousFiles anonFileMongoDate = new AnonymousFiles(FileNameGenerated, multipartFile.getOriginalFilename());
+            AnonymousFiles anonFileMongoDate = new AnonymousFiles(FileNameGenerated, multipartFile.getOriginalFilename(),uploadPath.toString());
             mongoTemplate.insert(anonFileMongoDate, "anonymous files");
             return true;
         } catch (IOException e) {
