@@ -18,4 +18,5 @@ public class AnonymousFiles {
     @Id
     private String hashedFileName;
     private String fileName;
+    private String directoryFile;
 }

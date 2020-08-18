@@ -45,6 +45,11 @@ class RootApplicationTests {
 		uploadService.uploadFileAnon(new MockMultipartFile("data", "test-file.txt", "text/plain","sample data1".getBytes()));
 	}
 
+	//@Test
+	void downloadMethodTest(){
+
+	}
+
     @Test
 	void testEnumValues() {
 		System.out.println(ShareFilesConfig.ANONYMOUS_DIRECTORY);
