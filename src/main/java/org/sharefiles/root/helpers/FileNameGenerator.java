@@ -18,16 +18,30 @@ public class FileNameGenerator {
 
     static int counter=+1;
 
-    public static String generateFileNameHash(String originalFileName){
+    //TODO implement in both function - Counter in FileNames
+//  20200817# nyiQLWrf2J1 #test-file.txt
+    public static String generateAnonFileNameHash(String originalFileName) {
         StringBuilder sb = new StringBuilder();
         sb.append(todayFolderDirectory);
-        for (int i = 0; i< ShareFilesConfig.FILE_NAME_HASH_LENGTH; i++){
+        for (int i = 0; i <= ShareFilesConfig.FILE_NAME_HASH_LENGTH; i++) {
             sb.append(alphanum.charAt(random.nextInt(alphanum.length())));
         }
         sb.append(counter);
         sb.append(originalFileName);
         return sb.toString();
     }
-
+    //10znakków  #9
+//   2020 08 23 # uS2tMCDJ1 # test-file.txt
+    public static String generateRegisteredFileNameHash(String originalFileName){
+        StringBuilder sb = new StringBuilder();
+        sb.append(1);
+        sb.append(todayFolderDirectory);
+        for (int i=0; i<= ShareFilesConfig.FILE_NAME_HASH_LENGTH; i++){
+            sb.append(alphanum.charAt(random.nextInt(alphanum.length())));
+        }
+        sb.append(counter);
+        sb.append(originalFileName);
+        return sb.toString();
+    }
 
 }

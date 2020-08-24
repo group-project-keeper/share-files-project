@@ -9,5 +9,8 @@ public class ShareFilesConfig {
     public static final String CRON_AT_NIGHT_ZONE = "Europe/Warsaw";
     public static final int FILE_NAME_HASH_LENGTH = 10;
     public static final String MONGO_DATABASE_NAME = "files-data";
+    public static final String MONGO_COLECTION_FILE_ANON = "anonymous files";
+    public static final String MONGO_COLECTION_FILE_REIGSTERED = "registered files";
+
 
 }
