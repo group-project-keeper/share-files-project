@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import java.util.Date;
 
@@ -16,6 +18,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Document
+//@EntityListeners(AuditingEntityListener.class)
 public class RegisteredFiles {
 
     @Id
@@ -26,6 +29,5 @@ public class RegisteredFiles {
     @CreatedDate
     private Date uploadedTime;
     private int expirationTime;
-
 
 }

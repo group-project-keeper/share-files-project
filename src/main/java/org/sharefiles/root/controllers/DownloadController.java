@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -50,8 +51,7 @@ public class DownloadController {
                 }
             }
         }else{
-        response.getWriter().write("File not Found");
-        response.setStatus(404);
+            throw new FileNotFoundException("Invalid url,  File does not exists");
         }
     }
 }

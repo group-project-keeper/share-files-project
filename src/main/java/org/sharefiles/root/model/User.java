@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -32,6 +33,8 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank(message = "Bad username")
+    @Column(unique = true)
+    @Pattern(regexp = "[a-zA-Z0-9_.]{1,20}")
     private String username;
 
 
