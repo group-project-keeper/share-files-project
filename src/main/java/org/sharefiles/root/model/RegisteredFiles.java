@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Setter
 @Getter
-@Document
+@Document(collection = "registered files")
 //@EntityListeners(AuditingEntityListener.class)
 public class RegisteredFiles {
 

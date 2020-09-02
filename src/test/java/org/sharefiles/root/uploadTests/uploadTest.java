@@ -36,7 +36,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.junit.Test;
 import org.springframework.web.context.WebApplicationContext;
 //import org.junit.jupiter.api.Test;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import java.io.InputStream;
 import java.util.Date;
 
@@ -55,7 +55,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = RootApplication.class)
 @AutoConfigureMockMvc
 @EnableAutoConfiguration(exclude=SecurityAutoConfiguration.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class uploadTest {
 
 
@@ -97,13 +97,15 @@ public class uploadTest {
 
         @Test
         public void anonymousUploadControllerTest() throws Exception {
-            MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-file.txt", "text/plain","sample data1".getBytes());
+            MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test-file.txt", MediaType.TEXT_PLAIN_VALUE,"sample data1".getBytes());
+
 
             mockMvc.perform(MockMvcRequestBuilders.multipart("/upload")
-                    .file(mockMultipartFile)
-                    .accept(MediaType.ALL_VALUE))
+                    .file(mockMultipartFile))
                     .andExpect(MockMvcResultMatchers.status().is(200))
                     .andExpect((ResultMatcher) content().string("File has been uploaded"));
+
+
         }
 
         @Test

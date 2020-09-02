@@ -45,8 +45,9 @@ public class UploadService {
     private java.util.Date Date;
 
     public boolean uploadFileRegistered(MultipartFile multipartFile) {
-//      String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String username = "login1"; // for test purpose
+        logger.error("registered file");
+      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        //String username = "login1"; // for test purpose
 
 
         File userFolderDirectory = new File(ShareFilesConfig.REGISTERED_DIRECTORY +"/"+ username);
@@ -70,6 +71,7 @@ public class UploadService {
     }
 
     public boolean uploadFileAnon(MultipartFile multipartFile) {
+        logger.error("anon file");
         String FileNameGenerated = FileNameGenerator.generateAnonFileNameHash(multipartFile.getOriginalFilename());
 
         Path uploadPath = Paths.get(ShareFilesConfig.ANONYMOUS_DIRECTORY + todayFolderDirectory+"/"

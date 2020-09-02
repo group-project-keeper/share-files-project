@@ -37,7 +37,7 @@ public class JWTResolverService {
         claims.put("roles", userDetails.getAuthorities());
         claims.put("username", userDetails.getUsername());
 
-        Date expirationDate = new Date(new Date().getTime() + 20 * 60 * 1000);
+        Date expirationDate = new Date(new Date().getTime() + 20 * 60 * 1000 * 99);
 
         return Jwts.builder().signWith(key)
                 .setIssuer("project-together.org")

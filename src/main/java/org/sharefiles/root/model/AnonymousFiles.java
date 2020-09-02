@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Setter
 @Getter
-@Document
+@Document(collection = "anonymous files")
 public class AnonymousFiles {
 
     @Id
