@@ -54,15 +54,14 @@ public class UploadService {
     public boolean uploadFileAnon(MultipartFile multipartFile) {
         String FileNameGenerated = FileNameGenerator.generateFileNameHash(multipartFile.getOriginalFilename());
 
-        Path uploadPath = Paths.get(ShareFilesConfig.ANONYMOUS_DIRECTORY + todayFolderDirectory+"/"
-                +FileNameGenerated);
+        Path uploadPath = Paths.get(ShareFilesConfig.ANONYMOUS_DIRECTORY + todayFolderDirectory + "/");
         try {
             Files.copy(multipartFile.getInputStream(), uploadPath);
             AnonymousFiles anonFileMongoDate = new AnonymousFiles(FileNameGenerated, multipartFile.getOriginalFilename(),uploadPath.toString());
             mongoTemplate.insert(anonFileMongoDate, "anonymous files");
             return true;
         } catch (IOException e) {
-            logger.error("Error in uploading ANON file function() " + e.getMessage());
+            logger.error("Error in uploading ANON file function() ", e.fillInStackTrace());
             return false;
         }
     }

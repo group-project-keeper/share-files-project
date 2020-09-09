@@ -16,6 +16,12 @@ public class FileUploadResponse {
     private String responseMessage;
     private String fileAccessLink;
 
+    public FileUploadResponse(HttpStatus httpStatus, String responseMessage) {
+        this.httpStatus = httpStatus;
+        this.responseMessage = responseMessage;
+        this.fileAccessLink = fileAccessLink;
+    }
+
     public FileUploadResponse(HttpStatus httpStatus, boolean isAuthenticated, String responseMessage) {
         this.httpStatus = httpStatus;
         this.isAuthenticated = isAuthenticated;

@@ -7,6 +7,7 @@ import org.sharefiles.root.services.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,21 +29,19 @@ public class UploadController {
                 new ErrorResponse.Builder(HttpStatus.BAD_REQUEST, "File is empty").build(),
                 HttpStatus.BAD_REQUEST);
 
-        boolean isAuthenticated = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
-
-        if(isAuthenticated) {
+        if(SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken){
             isFinished = uploadService.uploadFileRegistered(file);
         } else {
             isFinished = uploadService.uploadFileAnon(file);
         }
 
+
         if(!isFinished)
-            return new ResponseEntity<Object>(new FileUploadResponse(HttpStatus.NOT_FOUND, isAuthenticated,
+            return new ResponseEntity<Object>(new FileUploadResponse(HttpStatus.NOT_FOUND,
                 "Something went wrong with uploading your file!"), HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity<Object>(new FileUploadResponse(HttpStatus.OK, isAuthenticated,
+            return new ResponseEntity<Object>(new FileUploadResponse(HttpStatus.OK,
                     "File has been uploaded"), HttpStatus.OK);
-
 
 
     }
