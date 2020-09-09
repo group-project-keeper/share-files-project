@@ -42,4 +42,23 @@ public class DownloadService {
         return fileDetails;
     }
 
+    public Map<String, String> DownloadFIleRegistered(String hashedFileName){
+        MongoCollection<Document> gradesCollection = mongoTemplate.getCollection("registered files");
+        Document foundFile = gradesCollection.find(new Document("hashedFileName", hashedFileName))
+                .projection(fields(include("directoryFile", "fileName"), excludeId())).first();
+
+        Map<String, String> fileDetails = new HashMap<>();
+
+        if (foundFile !=null){
+            fileDetails.put("directoryFile", foundFile.getString("directoryFile"));
+            fileDetails.put("fileName", foundFile.getString("fileName"));
+        }
+        return fileDetails;
+
+
+
+    }
+
+
+
 }

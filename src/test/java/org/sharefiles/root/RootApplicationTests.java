@@ -39,6 +39,12 @@ class RootApplicationTests {
 //	    uploadService.uploadFile(new MockMultipartFile("test-file.txt", "sample data1".getBytes()));
     }
 	 */
+	@Test
+	void registeredUploadMethodTest() {
+		System.out.println("cos111111");
+		uploadService.uploadFileRegistered(new MockMultipartFile("data", "test-file.txt", "text/plain","sample data1".getBytes()));
+	}
+
 
 	@Test
 	void uploadMethodTest() {

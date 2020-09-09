@@ -1,9 +1,11 @@
 package org.sharefiles.root.services;
 
 import org.sharefiles.root.config.ShareFilesConfig;
+import org.sharefiles.root.exceptions.FileStorageException;
 import org.sharefiles.root.helpers.FileNameGenerator;
 import org.sharefiles.root.helpers.OwnDateFormatter;
 import org.sharefiles.root.model.AnonymousFiles;
+import org.sharefiles.root.model.RegisteredFiles;
 import org.sharefiles.root.model.User;
 import org.sharefiles.root.repository.UserRepository;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -33,36 +36,58 @@ public class UploadService {
     @Autowired
     MongoTemplate mongoTemplate;
 
+    // TODO implement @CreatedDate in constructor for registered users
+    private java.util.Date Date;
+
     public boolean uploadFileRegistered(MultipartFile multipartFile) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<User> uploadUser = userRepository.findByUsername(username);
+        logger.error("registered file");
+      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        //String username = "login1"; // for test purpose
 
-        if(uploadUser.isPresent()) {
-            Path uploadPath = Paths.get(ShareFilesConfig.REGISTERED_DIRECTORY + uploadUser.get().getUploadDirName()
-                    + multipartFile.getOriginalFilename());
-            try {
-                Files.copy(multipartFile.getInputStream(), uploadPath);
 
-            } catch (IOException e) {
-                logger.error("Error in uploading REGIS file function() " + e.getMessage());
-                return false;
-            }
+        File userFolderDirectory = new File(ShareFilesConfig.REGISTERED_DIRECTORY +"/"+ username);
+        if (! userFolderDirectory.exists()){
+            userFolderDirectory.mkdir();
         }
-        return false;
+        String FileNameGenerated = FileNameGenerator.generateRegisteredFileNameHash(multipartFile.getOriginalFilename());
+        Path uploadPath = Paths.get(ShareFilesConfig.REGISTERED_DIRECTORY +"/"+ username +"/" + FileNameGenerated);
+        System.out.println(uploadPath.toString());
+        try {
+            Files.copy(multipartFile.getInputStream(), uploadPath);
+            RegisteredFiles registeredFileMongoDate = new RegisteredFiles(FileNameGenerated, multipartFile.getOriginalFilename(),
+                    uploadPath.toString(), username,Date,  7);
+            mongoTemplate.insert(registeredFileMongoDate, ShareFilesConfig.MONGO_COLECTION_FILE_REIGSTERED);
+            return true;
+
+        } catch (IOException e) {
+            logger.error("Error in uploading REGIS file function() " + e.getMessage());
+            return false;
+        }
     }
 
     public boolean uploadFileAnon(MultipartFile multipartFile) {
-        String FileNameGenerated = FileNameGenerator.generateFileNameHash(multipartFile.getOriginalFilename());
+        logger.error("anon file");
+        String FileNameGenerated = FileNameGenerator.generateAnonFileNameHash(multipartFile.getOriginalFilename());
 
         Path uploadPath = Paths.get(ShareFilesConfig.ANONYMOUS_DIRECTORY + todayFolderDirectory + "/");
         try {
             Files.copy(multipartFile.getInputStream(), uploadPath);
             AnonymousFiles anonFileMongoDate = new AnonymousFiles(FileNameGenerated, multipartFile.getOriginalFilename(),uploadPath.toString());
-            mongoTemplate.insert(anonFileMongoDate, "anonymous files");
+            mongoTemplate.insert(anonFileMongoDate, ShareFilesConfig.MONGO_COLECTION_FILE_ANON);
             return true;
         } catch (IOException e) {
             logger.error("Error in uploading ANON file function() ", e.fillInStackTrace());
             return false;
+        }
+    }
+
+
+    public void fileValidator(String fileName){
+        if (fileName.contains("..")){
+            throw new FileStorageException("File contains invalid name (\"\")");
+        }
+        if (fileName.length() > ShareFilesConfig.FILE_NAME_MAX_LENGTH){
+            throw new FileStorageException("File name is too long, maximum number of characters is 20");
         }
     }
 
