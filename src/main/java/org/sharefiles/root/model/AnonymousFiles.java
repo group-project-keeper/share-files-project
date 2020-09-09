@@ -1,5 +1,6 @@
 package org.sharefiles.root.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Document(collection = "anonymous files")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AnonymousFiles {
 
     @Id

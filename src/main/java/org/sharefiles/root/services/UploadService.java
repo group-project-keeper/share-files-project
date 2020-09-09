@@ -6,7 +6,6 @@ import org.sharefiles.root.helpers.FileNameGenerator;
 import org.sharefiles.root.helpers.OwnDateFormatter;
 import org.sharefiles.root.model.AnonymousFiles;
 import org.sharefiles.root.model.RegisteredFiles;
-import org.sharefiles.root.model.User;
 import org.sharefiles.root.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +15,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.Optional;
 
 @Service
 public class UploadService {

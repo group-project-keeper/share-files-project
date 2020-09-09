@@ -1,20 +1,14 @@
 package org.sharefiles.root.services;
 
-import com.mongodb.client.MongoCollection;
-import org.sharefiles.root.controllers.UserFilesDetails;
 import org.sharefiles.root.model.RegisteredFiles;
 import org.sharefiles.root.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-
-import org.bson.Document;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.mongodb.client.model.Projections.*;
 
 @Service
 public class UserFilesDetailsService {

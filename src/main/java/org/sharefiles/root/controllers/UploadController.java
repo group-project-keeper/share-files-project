@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Objects;
-
 
 @RestController
 public class UploadController {
@@ -32,7 +30,7 @@ public class UploadController {
                 new ErrorResponse.Builder(HttpStatus.BAD_REQUEST, "File is empty").build(),
                 HttpStatus.BAD_REQUEST);
 
-        uploadService.fileValidator(Objects.requireNonNull(file.getOriginalFilename()));
+//        uploadService.fileValidator(Objects.requireNonNull(file.getOriginalFilename()));
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

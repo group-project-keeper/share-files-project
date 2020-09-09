@@ -2,18 +2,16 @@ package org.sharefiles.root.services;
 
 
 import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import org.bson.Document;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Projections.*;
 
 
